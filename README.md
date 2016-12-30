@@ -11,7 +11,7 @@ This container makes use of [adnanh/webhook](https://github.com/adnanh/webhook) 
 
 # Features
 
-* adnanh/webhook 2.4.0
+* adnanh/webhook 2.6.0
 
 # Usage
 

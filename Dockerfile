@@ -1,7 +1,7 @@
 FROM handcraftedbits/nginx-unit:1.0.0
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
-ARG WEBHOOK_VERSION=2.4.0
+ARG WEBHOOK_VERSION=2.6.0
 
 COPY data /
 
