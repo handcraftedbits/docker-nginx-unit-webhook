@@ -1,4 +1,4 @@
-FROM handcraftedbits/nginx-unit:1.0.0
+FROM handcraftedbits/nginx-unit:1.0.1
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
 ARG WEBHOOK_VERSION=2.6.0
@@ -6,7 +6,7 @@ ARG WEBHOOK_VERSION=2.6.0
 COPY data /
 
 RUN apk update update && \
-  apk add bash git go && \
+  apk add bash git go libc-dev && \
   
   mkdir -p /opt/webhook && \
   mkdir -p /opt/gopath/src/github.com/adnanh && \
@@ -25,7 +25,7 @@ RUN apk update update && \
   cd /opt && \
   rm -rf gopath && \
 
-  apk del git go
+  apk del git go libc-dev
 
 EXPOSE 9000
 
