@@ -1,4 +1,4 @@
-FROM handcraftedbits/nginx-unit:1.0.1
+FROM handcraftedbits/nginx-unit:1.1.0
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
 ARG WEBHOOK_VERSION=2.6.0
@@ -15,6 +15,7 @@ RUN apk update update && \
   cd webhook && \
   git checkout tags/${WEBHOOK_VERSION} && \
   export GOPATH=/opt/gopath && \
+  git config --global http.https://gopkg.in.followRedirects true && \
 
   go get github.com/codegangsta/negroni && \
   go get github.com/gorilla/mux && \
@@ -29,4 +30,4 @@ RUN apk update update && \
 
 EXPOSE 9000
 
-CMD ["/bin/bash", "/opt/container/script/run-webhook.sh"]
+CMD [ "/bin/bash", "/opt/container/script/run-webhook.sh" ]

@@ -13,12 +13,10 @@ else
      WEBHOOK_VERBOSE=""
 fi
 
-notifyUnitLaunched
-
 copyUnitConf nginx-unit-webhook > /dev/null
 
 notifyUnitStarted
 
 # Start webhooks.
 
-/opt/webhook/webhook -hooks /opt/container/webhooks.json -urlprefix "webhooks" ${WEBHOOK_VERBOSE}
+exec /opt/webhook/webhook -hooks /opt/container/webhooks.json -urlprefix "webhooks" ${WEBHOOK_VERBOSE}

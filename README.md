@@ -49,7 +49,7 @@ Finally, we need to create a link in our NGINX Host container to the `webhooks` 
 webhooks.  Here is our final `docker-compose.yml` file:
 
 ```yaml
-version: '2'
+version: "3"
 
 services:
   data:
@@ -57,8 +57,9 @@ services:
 
   proxy:
     image: handcraftedbits/nginx-host
-    links:
-      - webhooks
+    depends_on:
+      webhooks:
+        condition: service_healthy
     ports:
       - "443:443"
     volumes:
