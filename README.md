@@ -11,7 +11,7 @@ This container makes use of [adnanh/webhook](https://github.com/adnanh/webhook) 
 
 # Features
 
-* adnanh/webhook 2.6.0
+* adnanh/webhook 2.6.2
 
 # Usage
 
@@ -32,9 +32,8 @@ webhooks:
     - NGINX_UNIT_HOSTS=mysite.com
     - NGINX_URL_PREFIX=/webhooks
   volumes:
+    - data:/opt/container/shared
     - /home/me/webhooks.json:/opt/container/webhooks.json
-  volumes_from:
-    - data
 ```
 
 Observe the following:
@@ -42,31 +41,28 @@ Observe the following:
 * We mount `/opt/container/webhooks.json` using the local file `/home/me/webhooks.json`.  This is a file containing our
   webhook configuration.  Refer to the [documentation](https://github.com/adnanh/webhook/blob/master/README.md) for
   information on the contents of this file.
-* As with any other NGINX Host unit, we mount the volumes from our
-  [NGINX Host data container](https://github.com/handcraftedbits/docker-nginx-host-data), in this case named `data`.
+* As with any other NGINX Host unit, we mount our data volume, in this case named `data`, to `/opt/container/shared`.
 
 Finally, we need to create a link in our NGINX Host container to the `webhooks` container in order to host the
 webhooks.  Here is our final `docker-compose.yml` file:
 
 ```yaml
-version: "3"
+version: "2.1"
+
+volumes:
+  data:
 
 services:
-  data:
-    image: handcraftedbits/nginx-host-data
-
   proxy:
     image: handcraftedbits/nginx-host
-    depends_on:
-      webhooks:
-        condition: service_healthy
+    links:
+      - webhooks
     ports:
       - "443:443"
     volumes:
+      - data:/opt/container/shared
       - /etc/letsencrypt:/etc/letsencrypt
       - /home/me/dhparam.pem:/etc/ssl/dhparam.pem
-    volumes_from:
-      - data
 
   webhooks:
     image: handcraftedbits/nginx-unit-webhook
@@ -74,9 +70,8 @@ services:
       - NGINX_UNIT_HOSTS=mysite.com
       - NGINX_URL_PREFIX=/webhooks
     volumes:
+      - data:/opt/container/shared
       - /home/me/webhooks.json:/opt/container/webhooks.json
-    volumes_from:
-      - data
 ```
 
 This will result in making the webhooks available at `https://mysite.com/webhooks`.
