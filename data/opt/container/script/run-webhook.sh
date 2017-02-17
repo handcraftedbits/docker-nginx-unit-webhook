@@ -15,11 +15,10 @@ fi
 
 notifyUnitLaunched
 
-unitConf=`copyUnitConf nginx-unit-webhook`
+copyUnitConf nginx-unit-webhook > /dev/null
 
 notifyUnitStarted
 
 # Start webhooks.
 
-startProcessWithTrap ${UNIT_TRAP_FUNCTION:-onProcessStopped} ${unitConf} /opt/webhook/webhook -hooks \
-     /opt/container/webhooks.json -urlprefix "webhooks" ${WEBHOOK_VERBOSE}
+exec /opt/webhook/webhook -hooks /opt/container/webhooks.json -urlprefix "webhooks" ${WEBHOOK_VERBOSE}
