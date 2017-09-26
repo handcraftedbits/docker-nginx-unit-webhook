@@ -1,7 +1,7 @@
 FROM handcraftedbits/nginx-unit:1.1.3
 MAINTAINER HandcraftedBits <opensource@handcraftedbits.com>
 
-ARG WEBHOOK_VERSION=2.6.2
+ARG WEBHOOK_VERSION=2.6.5
 
 COPY data /
 
@@ -18,6 +18,7 @@ RUN apk update update && \
   git config --global http.https://gopkg.in.followRedirects true && \
 
   go get github.com/codegangsta/negroni && \
+  go get github.com/ghodss/yaml && \
   go get github.com/gorilla/mux && \
   go get gopkg.in/fsnotify.v1 && \
 
